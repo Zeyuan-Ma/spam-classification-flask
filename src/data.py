@@ -32,7 +32,7 @@ def load_email_data():
 
     # 根据上一步得到的文件路径，读取文件内容
     context =  []
-    os.chdir('../data/raw/full/')
+    os.chdir('../data/raw/full/') # 因为filename的路径是基于full下的，所以要改一下工作目录
     for filename in filenames:
         with open(filename,encoding='gbk',errors='ignore') as f:
             context.append(f.read())
@@ -40,13 +40,14 @@ def load_email_data():
     # 切分数据集  训练集特征/测试集特征 / 训练集标签/测试集标签          特征/标签
     x_train,x_test,y_train,y_test = train_test_split(context,labels,test_size=0.2,random_state=42)
 
-    # 存储到csv文件
+    # 合并 存储到csv文件
     os.chdir('../../merge')
     pd.DataFrame({'label':y_train,'context':x_train}).to_csv('raw_train.csv',index=False)
     pd.DataFrame({'label':y_test,'context':x_test}).to_csv('raw_test.csv',index=False)
 
 # 测试
 if __name__ == '__main__':
+    # 加载合并数据
     # print(os.getcwd())
     # load_email_data()
     os.chdir('../data/merge')
