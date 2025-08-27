@@ -24,7 +24,7 @@ def load_email_data():
     """
     # 读取index文件下的标签和文件路径
     labels,filenames = [],[]
-    with open('../data_raw/full/index') as f:
+    with open('../data/raw/full/index') as f:
         for line in f:
             label, path = line.strip().split()
             labels.append(label)
@@ -32,7 +32,7 @@ def load_email_data():
 
     # 根据上一步得到的文件路径，读取文件内容
     context =  []
-    os.chdir('../data_raw/full/')
+    os.chdir('../data/raw/full/')
     for filename in filenames:
         with open(filename,encoding='gbk',errors='ignore') as f:
             context.append(f.read())
@@ -41,7 +41,7 @@ def load_email_data():
     x_train,x_test,y_train,y_test = train_test_split(context,labels,test_size=0.2,random_state=42)
 
     # 存储到csv文件
-    os.chdir('../../data_clean')
+    os.chdir('../../merge')
     pd.DataFrame({'label':y_train,'context':x_train}).to_csv('raw_train.csv',index=False)
     pd.DataFrame({'label':y_test,'context':x_test}).to_csv('raw_test.csv',index=False)
 
@@ -49,7 +49,7 @@ def load_email_data():
 if __name__ == '__main__':
     # print(os.getcwd())
     # load_email_data()
-    os.chdir('../data_clean')
+    os.chdir('../data/merge')
     df = pd.read_csv('raw_train.csv')
     df2 = pd.read_csv('raw_test.csv')
     print(df)
